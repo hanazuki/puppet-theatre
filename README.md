@@ -118,13 +118,13 @@ c.add_notifier :takosan,
 
 Sends notifications to a [Takosan](https://github.com/kentaro/takosan) server, a web-to-Slack gateway. Requires `takosan` gem.
 
-### Threads
+### Multi-Process
 
 ```ruby
-c.in_threads 3
+c.in_processes 3
 ```
 
-You can specify the number of active threads.
+You can specify the number of active processes.
 
 ### Custom Components
 

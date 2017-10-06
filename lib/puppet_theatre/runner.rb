@@ -11,14 +11,14 @@ module PuppetTheatre
     end
 
     class Config
-      attr_accessor :hosts, :checkers, :reporters, :notifiers, :threads
+      attr_accessor :hosts, :checkers, :reporters, :notifiers, :processes
 
       def initialize
         @hosts = []
         @checkers = {}
         @reporters = {}
         @notifiers = {}
-        @threads = 1
+        @processes = 1
       end
 
       def hosts_from(klass, opts = {})
@@ -45,8 +45,8 @@ module PuppetTheatre
         @notifiers[opts[:name] || klass.name.split('::')[-1]] = obj
       end
 
-      def in_threads(v)
-        @threads = v
+      def in_processes(v)
+        @processes = v
       end
     end
 
@@ -71,7 +71,7 @@ module PuppetTheatre
     def call
       results = Hash.new {|h, k| h[k] = {} }
 
-      Parallel.map(config(:hosts).sort, in_threads: config(:threads)) do |host|
+      Parallel.map(config(:hosts).sort, in_processes: config(:processes)) do |host|
         config(:checkers).each_pair do |name, checker|
           result =
             begin
